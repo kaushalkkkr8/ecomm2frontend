@@ -41,6 +41,7 @@ function App() {
           <Route path="/gift-boxes" element={<GiftBox />} />
           <Route path="/books" element={<GiftBox />} />
           <Route path="/stationery" element={<GiftBox />} />
+          <Route path="/fashion-accessories" element={<GiftBox />} />
           <Route path="/cart" element={<ShoppingCartPage />} />
           <Route path="/orders" element={<Order />} />
           <Route path="/admin/:sellerId" element={<DashboardPage />} />

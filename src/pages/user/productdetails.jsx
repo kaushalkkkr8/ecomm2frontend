@@ -409,7 +409,7 @@ const ProductDetail = () => {
               <Link key={item.productId} to={`/product/${item.productId}`}>
                 <div className="bg-white shadow-lg rounded-xl overflow-hidden">
                   <img 
-                    src={item.img} 
+                    src={item.img[0].imageURL} 
                     alt={item.name} 
                     className="w-full h-64 object-cover" 
                   />

@@ -6,15 +6,15 @@ import { Package, ShoppingBag, MessageSquare, Users, Calendar, Menu, LayoutDashb
 const Sidebar = () => {
   const navigate = useNavigate();
   const { sellerId } = useParams();
-  console.log("sellerId",sellerId);
-  
+  console.log("sellerId", sellerId);
+
   const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [productData, setProductData] = useState({
     name: "",
     price: "",
- 
+
     img: [],
     category: "",
     rating: "",
@@ -25,7 +25,6 @@ const Sidebar = () => {
   });
   const location = useLocation();
 
- 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -73,7 +72,10 @@ const Sidebar = () => {
 
     if (name === "img" && files.length > 0) {
       setProductData((prevData) => {
-        const updatedImg = [...prevData?.img, ...Array.from(files)]; // Spread to handle multiple files
+        const updatedImg = [
+          ...(prevData.img || []), 
+          ...Array.from(files), 
+        ]; 
         return { ...prevData, img: updatedImg };
       });
 
@@ -81,7 +83,7 @@ const Sidebar = () => {
       reader.onloadend = () => {
         setPreview(reader.result);
       };
-      reader.readAsDataURL(files[0])
+      reader.readAsDataURL(files[0]);
     } else {
       setProductData({ ...productData, [name]: value });
     }
@@ -131,7 +133,7 @@ const Sidebar = () => {
         });
       }
       console.log("FormData before submission:", formData);
-    
+
       const response = await fetch("https://ecomm2backend.vercel.app/create-product", {
         method: "POST",
         body: formData,
@@ -180,7 +182,6 @@ const Sidebar = () => {
                 <img src={preview} alt="Selected" className="w-full h-full object-cover" />
               </div>
             )}
-          
 
             <input type="text" name="category" placeholder="Category" value={productData.category} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
             <input type="number" name="rating" placeholder="Rating" value={productData.rating} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" min={0} max={5} />

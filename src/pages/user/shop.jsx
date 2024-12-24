@@ -111,7 +111,7 @@ const Shop = ({ category }) => {
       <Link to={`/${product.productId}`} className="block">
         <div className="aspect-w-1 aspect-h-1 w-full">
           <img 
-            src={product.img} 
+            src={product.img[0].imageURL} 
             alt={product.name}
             className="w-full h-48 object-cover object-center"
           />
