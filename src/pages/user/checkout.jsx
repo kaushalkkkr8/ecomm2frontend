@@ -52,7 +52,8 @@ const Checkout = () => {
     }
 
     try {
-      const cartResponse = await fetch(`https://ecommercebackend-8gx8.onrender.com/cart/${userId}`);
+      // const cartResponse = await fetch(`https://ecommercebackend-8gx8.onrender.com/cart/${userId}`);
+      const cartResponse = await fetch(`http://localhost:5000/cart/${userId}`);
       const cartData = await cartResponse.json();
 
       if (!cartData.success) {
@@ -73,7 +74,8 @@ const Checkout = () => {
       }, {});
 
       const productPromises = Object.values(groupedItems).map(async (item) => {
-        const productResponse = await fetch(`https://ecommercebackend-8gx8.onrender.com/product/${item.productId}`);
+        // const productResponse = await fetch(`https://ecommercebackend-8gx8.onrender.com/product/${item.productId}`);
+        const productResponse = await fetch(`http://localhost:5000/product/${item.productId}`);
         const productData = await productResponse.json();
         
         if (productData.success) {

@@ -1,291 +1,266 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { Package, ShoppingBag, MessageSquare, Users, Calendar, Menu, LayoutDashboard, LogOut, Ticket } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Package, ShoppingBag, MessageSquare, Users, Calendar, Menu, LayoutDashboard, LogOut, Ticket } from "lucide-react";
 
 const Sidebar = () => {
-    const navigate = useNavigate();
-    const { sellerId } = useParams();
-    const [isOpen, setIsOpen] = useState(false);
-    const [showDialog, setShowDialog] = useState(false);
-    const [productData, setProductData] = useState({
-        name: '',
-        price: '',
-        img: '',
-        category: '',
-        rating: 0,
-        productId: '',
-        inStockValue: 0,
-        soldStockValue: 0
-    });
-    const location = useLocation();
+  const navigate = useNavigate();
+  const { sellerId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [preview, setPreview] = useState(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const [productData, setProductData] = useState({
+    name: "",
+    price: "",
+    // img: "",
+    img: [],
+    category: "",
+    rating: "",
+    productId: "",
+    inStockValue: "",
+    soldStockValue: "",
+    description: "",
+  });
+  const location = useLocation();
 
-    // Set initial state based on screen size and update on resize
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth >= 1024) { // lg breakpoint
-                setIsOpen(true);
-            } else {
-                setIsOpen(false);
-            }
-        };
-
-        // Set initial state
-        handleResize();
-
-        // Add resize listener
-        window.addEventListener('resize', handleResize);
-
-        // Cleanup
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const menuItems = [
-        { name: 'Dashboard', icon: <LayoutDashboard />, path: `/admin/${sellerId}` },
-        { name: 'Products', icon: <Package />, path: `/admin/products/${sellerId}` },
-        { name: 'Orders', icon: <ShoppingBag />, path: `/admin/orders/${sellerId}` },
-        { name: 'Complaints', icon: <MessageSquare />, path: `/admin/complaints/${sellerId}` },
-        { name: 'Customers', icon: <Users />, path: `/admin/customers/${sellerId}` },
-        { name: 'Calendar', icon: <Calendar />, path: `/admin/calendar/${sellerId}` },
-        { name: 'Coupons', icon: <Ticket />, path: `/seller/coupons/${sellerId}` },
-    ];
-
-    const toggleSidebar = () => {
-        if (window.innerWidth < 1024) { // Only allow toggle on smaller screens
-            setIsOpen(!isOpen);
-        }
+  // Set initial state based on screen size and update on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        // lg breakpoint
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
     };
 
-    const generateProductId = () => {
-        const randomId = Math.floor(100000 + Math.random() * 900000).toString();
-        setProductData({...productData, productId: randomId});
-    };
+    // Set initial state
+    handleResize();
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setProductData({...productData, [name]: value});
-    };
+    // Add resize listener
+    window.addEventListener("resize", handleResize);
 
-    const handleLogout = async () => {
-        try {
-            const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/logout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({ sellerId })
-            });
-            
-            if(response.ok) {
-                navigate('/seller/login');
-            }
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    const handleSubmit = async () => {
-        try {
-            const response = await fetch('https://ecommercebackend-8gx8.onrender.com/create-product', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(productData)
-            });
-            
-            if(response.ok) {
-                setShowDialog(false);
-                setProductData({
-                    name: '',
-                    price: '',
-                    img: '',
-                    category: '',
-                    rating: 0,
-                    productId: '',
-                    inStockValue: 0,
-                    soldStockValue: 0
-                });
-            }
-        } catch (error) {
-            console.error('Error creating product:', error);
-        }
-    };
+  const menuItems = [
+    { name: "Dashboard", icon: <LayoutDashboard />, path: `/admin/${sellerId}` },
+    { name: "Products", icon: <Package />, path: `/admin/products/${sellerId}` },
+    { name: "Orders", icon: <ShoppingBag />, path: `/admin/orders/${sellerId}` },
+    { name: "Complaints", icon: <MessageSquare />, path: `/admin/complaints/${sellerId}` },
+    { name: "Customers", icon: <Users />, path: `/admin/customers/${sellerId}` },
+    { name: "Calendar", icon: <Calendar />, path: `/admin/calendar/${sellerId}` },
+    { name: "Coupons", icon: <Ticket />, path: `/seller/coupons/${sellerId}` },
+  ];
 
-    return (
-        <>
-            {/* Toggle button for small screens */}
-            <button 
-                onClick={toggleSidebar}
-                className="fixed top-4 left-4 p-2 rounded-lg hover:bg-pink-200 lg:hidden z-50"
-            >
-                <Menu size={24} />
+  const toggleSidebar = () => {
+    if (window.innerWidth < 1024) {
+      // Only allow toggle on smaller screens
+      setIsOpen(!isOpen);
+    }
+  };
+
+  const generateProductId = () => {
+    const randomId = Math.floor(100000 + Math.random() * 900000).toString();
+    setProductData({ ...productData, productId: randomId });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === "img" && files.length > 0) {
+      setProductData((prevData) => {
+        const updatedImg = [...prevData?.img, ...Array.from(files)]; // Spread to handle multiple files
+        return { ...prevData, img: updatedImg };
+      });
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(files[0])
+    } else {
+      setProductData({ ...productData, [name]: value });
+    }
+  };
+  const handleDeleteImage = (index) => {
+    setPreview((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
+    setProductData((prevData) => ({
+      ...prevData,
+      img: prevData.img.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/admin/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ sellerId }),
+      });
+
+      if (response.ok) {
+        navigate("/seller/login");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("name", productData.name);
+      formData.append("price", productData.price);
+      formData.append("category", productData.category);
+      formData.append("rating", productData.rating);
+      formData.append("productId", productData.productId);
+      formData.append("inStockValue", productData.inStockValue);
+      formData.append("soldStockValue", productData.soldStockValue);
+      formData.append("description", productData.description);
+      if (productData.img.length > 0) {
+        productData.img.forEach((file) => {
+          console.log("Appending file to formData:", file);
+          formData.append("prodImage", file); // Field name matches multer setup
+        });
+      }
+      console.log("FormData before submission:", formData);
+      // const response = await fetch("https://ecommercebackend-8gx8.onrender.com/create-product", {
+      const response = await fetch("http://localhost:5000/create-product", {
+        method: "POST",
+        body: formData,
+      });
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+      if (response.ok) {
+        setShowDialog(false);
+        setProductData({
+          name: "",
+          price: "",
+          img: null,
+          category: "",
+          rating: 0,
+          productId: "",
+          inStockValue: 0,
+          soldStockValue: 0,
+          description: "",
+        });
+        setPreview(null); // Clear the preview
+      }
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  return (
+    <>
+      {/* Toggle button for small screens */}
+      <button onClick={toggleSidebar} className="fixed top-4 left-4 p-2 rounded-lg hover:bg-pink-200 lg:hidden z-50">
+        <Menu size={24} />
+      </button>
+
+      {showDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Add New Product</h2>
+            <input type="text" name="name" placeholder="Product Name" value={productData.name} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+            <input type="text" name="price" placeholder="Price" value={productData.price} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+
+            <input type="file" name="img" placeholder="Image" multiple onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+
+            {preview && (
+              <div className="w-24 h-24 mb-3 border rounded overflow-hidden">
+                <img src={preview} alt="Selected" className="w-full h-full object-cover" />
+              </div>
+            )}
+            {/* {preview?.length > 0 && (
+              <div className="flex flex-wrap gap-3 mt-3">
+                {preview.map((imgPreview, index) => (
+                  <div key={index} className="w-24 h-24 relative border rounded overflow-hidden">
+                    <img src={imgPreview} alt={`Selected ${index}`} className="w-full h-full object-cover" />
+                    <button onClick={() => handleDeleteImage(index)} className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 rounded-full">
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )} */}
+
+            <input type="text" name="category" placeholder="Category" value={productData.category} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+            <input type="number" name="rating" placeholder="Rating" value={productData.rating} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" min={0} max={5} />
+            <div className="flex mb-3">
+              <input type="text" name="productId" placeholder="Product ID" value={productData.productId} readOnly className="w-2/3 p-2 border rounded-l" />
+              <button onClick={generateProductId} className="w-1/3 bg-pink-500 text-white p-2 rounded-r">
+                Generate
+              </button>
+            </div>
+            <input type="number" name="inStockValue" placeholder="In Stock" value={productData.inStockValue} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+            <input type="number" name="soldStockValue" placeholder="Sold Stock" value={productData.soldStockValue} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+            <textarea type="text" name="description" placeholder="Description" value={productData.description} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setShowDialog(false)} className="px-4 py-2 bg-gray-300 rounded">
+                Cancel
+              </button>
+              <button onClick={handleSubmit} className="px-4 py-2 bg-pink-500 text-white rounded">
+                Save Product
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`fixed left-0 top-0 h-screen bg-pink-50 shadow-lg transition-all duration-300 flex flex-col 
+                lg:translate-x-0 lg:w-64
+                ${isOpen ? "w-64" : "w-20"}`}
+      >
+        <div className="flex items-center p-4">{isOpen && <div className="text-2xl font-bold text-gray-800">Mera Bestie</div>}</div>
+
+        <div className="flex-grow flex items-center">
+          <ul className="space-y-2 p-4 w-full">
+            {menuItems.map((item) => (
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  className={`flex items-center p-2 rounded-lg transition-colors
+                                        ${location.pathname === item.path ? "bg-pink-200 text-pink-800" : "text-gray-700 hover:bg-pink-100"}
+                                        ${isOpen ? "justify-start space-x-4" : "justify-center"}`}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  {isOpen && <span>{item.name}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-auto">
+          <div className={`p-4 ${isOpen ? "block" : "hidden"}`}>
+            <p className="text-center text-gray-600 mb-2">Please, manage your products through the button below.</p>
+            <button onClick={() => setShowDialog(true)} className="w-full bg-pink-300 text-white py-2 rounded hover:bg-pink-400 mb-2">
+              + Add Product
             </button>
 
-            {showDialog && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg w-96">
-                        <h2 className="text-xl font-bold mb-4">Add New Product</h2>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Product Name"
-                            value={productData.name}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                        />
-                        <input
-                            type="text"
-                            name="price"
-                            placeholder="Price"
-                            value={productData.price}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                        />
-                        <input
-                            type="text"
-                            name="img"
-                            placeholder="Image URL"
-                            value={productData.img}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                        />
-                        <input
-                            type="text"
-                            name="category"
-                            placeholder="Category"
-                            value={productData.category}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                        />
-                        <input
-                            type="number"
-                            name="rating"
-                            placeholder="Rating"
-                            value={productData.rating}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                            min={0}
-                            max={5}
-                        />
-                        <div className="flex mb-3">
-                            <input
-                                type="text"
-                                name="productId"
-                                placeholder="Product ID"
-                                value={productData.productId}
-                                readOnly
-                                className="w-2/3 p-2 border rounded-l"
-                            />
-                            <button
-                                onClick={generateProductId}
-                                className="w-1/3 bg-pink-500 text-white p-2 rounded-r"
-                            >
-                                Generate
-                            </button>
-                        </div>
-                        <input
-                            type="number"
-                            name="inStockValue"
-                            placeholder="In Stock"
-                            value={productData.inStockValue}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                        />
-                        <input
-                            type="number"
-                            name="soldStockValue"
-                            placeholder="Sold Stock"
-                            value={productData.soldStockValue}
-                            onChange={handleInputChange}
-                            className="w-full mb-3 p-2 border rounded"
-                        />
-                        <div className="flex justify-end gap-2">
-                            <button
-                                onClick={() => setShowDialog(false)}
-                                className="px-4 py-2 bg-gray-300 rounded"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleSubmit}
-                                className="px-4 py-2 bg-pink-500 text-white rounded"
-                            >
-                                Save Product
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <Link to="/" className="w-full flex items-center justify-center bg-green-500 text-white py-2 rounded hover:bg-green-600 mb-2">
+              Go to Website
+            </Link>
 
-            <div className={`fixed left-0 top-0 h-screen bg-pink-50 shadow-lg transition-all duration-300 flex flex-col 
-                lg:translate-x-0 lg:w-64
-                ${isOpen ? 'w-64' : 'w-20'}`}
-            >
-                <div className="flex items-center p-4">
-                    {isOpen && (
-                        <div className="text-2xl font-bold text-gray-800">
-                            Mera Bestie
-                        </div>
-                    )}
-                </div>
+            <button onClick={handleLogout} className="w-full flex items-center justify-center bg-red-500 text-white py-2 rounded hover:bg-red-600">
+              <LogOut className="mr-2" size={18} />
+              Logout
+            </button>
+          </div>
 
-                <div className="flex-grow flex items-center">
-                    <ul className="space-y-2 p-4 w-full">
-                        {menuItems.map((item) => (
-                            <li key={item.path}>
-                                <Link
-                                    to={item.path}
-                                    className={`flex items-center p-2 rounded-lg transition-colors
-                                        ${location.pathname === item.path 
-                                            ? 'bg-pink-200 text-pink-800' 
-                                            : 'text-gray-700 hover:bg-pink-100'}
-                                        ${isOpen ? 'justify-start space-x-4' : 'justify-center'}`}
-                                >
-                                    <span className="text-xl">{item.icon}</span>
-                                    {isOpen && <span>{item.name}</span>}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className="mt-auto">
-                    <div className={`p-4 ${isOpen ? 'block' : 'hidden'}`}>
-                        <p className="text-center text-gray-600 mb-2">
-                            Please, manage your products through the button below.
-                        </p>
-                        <button 
-                            onClick={() => setShowDialog(true)}
-                            className="w-full bg-pink-300 text-white py-2 rounded hover:bg-pink-400 mb-2"
-                        >
-                            + Add Product
-                        </button>
-                        
-                        <Link 
-                            to="/" 
-                            className="w-full flex items-center justify-center bg-green-500 text-white py-2 rounded hover:bg-green-600 mb-2"
-                        >
-                            Go to Website
-                        </Link>
-
-                        <button
-                            onClick={handleLogout}
-                            className="w-full flex items-center justify-center bg-red-500 text-white py-2 rounded hover:bg-red-600"
-                        >
-                            <LogOut className="mr-2" size={18} />
-                            Logout
-                        </button>
-                    </div>
-
-                    <footer className={`text-center text-gray-500 text-sm p-4 ${isOpen ? 'block' : 'hidden'}`}>
-                        Mera Bestie Admin Dashboard © 2024
-                    </footer>
-                </div>
-            </div>
-        </>
-    );
+          <footer className={`text-center text-gray-500 text-sm p-4 ${isOpen ? "block" : "hidden"}`}>Mera Bestie Admin Dashboard © 2024</footer>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Sidebar;

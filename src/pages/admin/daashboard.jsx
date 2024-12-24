@@ -6,6 +6,8 @@ import Sidebar from '../../components/admin/sidebar';
 
 const DashboardPage = () => {
     const { sellerId } = useParams();
+    console.log("sellerId",sellerId);
+    
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +33,7 @@ const DashboardPage = () => {
             }
 
             try {
-                const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/verify-seller', {
+                const response = await fetch('http://localhost:5000/admin/verify-seller', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

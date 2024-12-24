@@ -21,20 +21,17 @@ const AdminLogin = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://ecommercebackend-8gx8.onrender.com/admin/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sellerId,
-            emailOrPhone,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:5000/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sellerId,
+          emailOrPhone,
+          password,
+        }),
+      });
 
       const data = await response.json();
 
@@ -68,17 +65,11 @@ const AdminLogin = () => {
         >
           <div className="p-8">
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-                Admin Login
-              </h2>
+              <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">Admin Login</h2>
               <p className="text-pink-600 mt-2">Log in to Admin Dashboard</p>
             </div>
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 text-center">
-                {error}
-              </div>
-            )}
+            {error && <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 text-center">{error}</div>}
 
             <div className="space-y-6">
               <div className="relative">
@@ -97,17 +88,11 @@ const AdminLogin = () => {
 
               {!selectedMethod ? (
                 <div className="flex justify-center gap-8">
-                  <button
-                    onClick={() => setSelectedMethod("emailId")}
-                    className="flex flex-col items-center p-4 px-8 border-2 border-pink-300 rounded-xl hover:border-pink-500 transition-colors"
-                  >
+                  <button onClick={() => setSelectedMethod("emailId")} className="flex flex-col items-center p-4 px-8 border-2 border-pink-300 rounded-xl hover:border-pink-500 transition-colors">
                     <Mail size={36} className="text-pink-500 mb-2" />
                     <span className="text-gray-700">Email</span>
                   </button>
-                  <button
-                    onClick={() => setSelectedMethod("phone")}
-                    className="flex flex-col items-center p-4 px-8 border-2 border-pink-300 rounded-xl hover:border-pink-500 transition-colors"
-                  >
+                  <button onClick={() => setSelectedMethod("phone")} className="flex flex-col items-center p-4 px-8 border-2 border-pink-300 rounded-xl hover:border-pink-500 transition-colors">
                     <Phone size={36} className="text-pink-500 mb-2" />
                     <span className="text-gray-700">Phone</span>
                   </button>
@@ -164,11 +149,7 @@ const AdminLogin = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-pink-400 hover:text-pink-600 transition"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <button type="button" className="absolute inset-y-0 right-0 pr-3 flex items-center text-pink-400 hover:text-pink-600 transition" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>

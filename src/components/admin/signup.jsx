@@ -45,7 +45,8 @@ const AdminSignup = () => {
     }
 
     try {
-      const response = await fetch('https://ecommercebackend-8gx8.onrender.com/seller/signup', {
+      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/seller/signup', {
+      const response = await fetch('http://localhost:5000/admin/seller/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -70,17 +71,19 @@ const AdminSignup = () => {
     }
   };
 
-  const handleVerificationMethodSelect = async (method) => {
-    setVerificationMethod(method);
+  const handleVerificationMethodSelect = async (methodd) => {
+    setVerificationMethod(methodd);
+    setError(null);
     try {
-      const response = await fetch('https://ecommercebackend-8gx8.onrender.com/seller/send-otp', {
+      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/seller/send-otp', {
+      const response = await fetch('http://localhost:5000/seller/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ 
-          emailId
-        })
+        body: JSON.stringify(
+          methodd === 'email' ? { emailId } : { phoneNumber }
+        )
       });
 
       if (!response.ok) {
@@ -99,7 +102,7 @@ const AdminSignup = () => {
     if (resendDisabled) return;
     
     try {
-      const response = await fetch('https://ecommercebackend-8gx8.onrender.com/seller/send-otp', {
+      const response = await fetch('http://localhost:5000/seller/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -140,7 +143,7 @@ const AdminSignup = () => {
     }
 
     try {
-      const response = await fetch('https://ecommercebackend-8gx8.onrender.com/seller/verify-otp', {
+      const response = await fetch('http://localhost:5000/seller/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -153,16 +156,18 @@ const AdminSignup = () => {
 
       const data = await response.json();
 
-      if (response.ok && data.message === 'OTP verified successfully') {
-        navigate('/admin');
-      } else {
-        setError(data.message || 'Invalid OTP. Please try again.');
-      }
-    } catch (error) {
-      setError('Something went wrong. Please try again.');
-      console.error('Error:', error);
+    if (response.ok && data.message === 'OTP verified successfully') {
+      const sellerId = data.sellerId; // Ensure backend sends this
+      sessionStorage.setItem('sellerId', sellerId);
+      navigate(`/admin/${sellerId}`);
+    } else {
+      setError(data.message || 'Invalid OTP. Please try again.');
     }
-  };
+  } catch (error) {
+    setError('Something went wrong. Please try again.');
+    console.error('Error:', error);
+  }
+};
 
   return (
     <>
@@ -170,7 +175,7 @@ const AdminSignup = () => {
         <title>Admin Signup | Mera Bestie</title>
       </Helmet>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 px-4 mt-10 py-10 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="max-w-md mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden sm:max-w-lg lg:max-w-xl"
