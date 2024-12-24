@@ -20,7 +20,7 @@ const Dashboard = () => {
     const getOrderData = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch("http://localhost:5000/get-orders");
+            const response = await fetch("https://ecomm2backend.vercel.app/get-orders");
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }

@@ -16,7 +16,7 @@ const RecentlyViewed = () => {
       }
 
       const productPromises = recentlyViewedProducts.map(async (element) => {
-        const response = await fetch('http://localhost:5000/product/' + element);
+        const response = await fetch('https://ecomm2backend.vercel.app/product/' + element);
         const productDetail = await response.json();
         return productDetail.product;
       });

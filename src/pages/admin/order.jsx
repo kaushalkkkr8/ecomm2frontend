@@ -99,8 +99,7 @@ const Orders = () => {
       }
 
       try {
-        // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/verify-seller', {
-        const response = await fetch('http://localhost:5000/admin/verify-seller', {
+        const response = await fetch('https://ecomm2backend.vercel.app/admin/verify-seller', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -128,8 +127,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/get-orders');
-      const response = await fetch('http://localhost:5000/get-orders');
+      const response = await fetch('https://ecomm2backend.vercel.app/get-orders');
       const data = await response.json();
       const ordersWithStatus = data.orders.map(order => ({
         ...order,

@@ -33,7 +33,7 @@ const DashboardPage = () => {
             }
 
             try {
-                const response = await fetch('http://localhost:5000/admin/verify-seller', {
+                const response = await fetch('https://ecomm2backend.vercel.app/admin/verify-seller', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

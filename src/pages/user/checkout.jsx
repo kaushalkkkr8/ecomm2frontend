@@ -53,7 +53,7 @@ const Checkout = () => {
 
     try {
       // const cartResponse = await fetch(`https://ecommercebackend-8gx8.onrender.com/cart/${userId}`);
-      const cartResponse = await fetch(`http://localhost:5000/cart/${userId}`);
+      const cartResponse = await fetch(`https://ecomm2backend.vercel.app/cart/${userId}`);
       const cartData = await cartResponse.json();
 
       if (!cartData.success) {
@@ -75,7 +75,7 @@ const Checkout = () => {
 
       const productPromises = Object.values(groupedItems).map(async (item) => {
         // const productResponse = await fetch(`https://ecommercebackend-8gx8.onrender.com/product/${item.productId}`);
-        const productResponse = await fetch(`http://localhost:5000/product/${item.productId}`);
+        const productResponse = await fetch(`https://ecomm2backend.vercel.app/product/${item.productId}`);
         const productData = await productResponse.json();
         
         if (productData.success) {
@@ -146,7 +146,7 @@ const Checkout = () => {
 
     if (saveAddress) {
       try {
-        await fetch('https://ecommercebackend-8gx8.onrender.com/update-address', {
+        await fetch('https://ecomm2backend.vercel.app/update-address', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -171,7 +171,7 @@ const Checkout = () => {
     }));
 
     try {
-      const response = await fetch('https://ecommercebackend-8gx8.onrender.com/cart/place-order', {
+      const response = await fetch('https://ecomm2backend.vercel.app/cart/place-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

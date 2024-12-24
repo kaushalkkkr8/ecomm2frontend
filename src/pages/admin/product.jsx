@@ -31,8 +31,7 @@ const Product = () => {
       }
 
       try {
-        // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/verify-seller', {
-        const response = await fetch("http://localhost:5000/admin/verify-seller", {
+        const response = await fetch("https://ecomm2backend.vercel.app/admin/verify-seller", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -60,8 +59,7 @@ const Product = () => {
 
   const fetchProducts = async () => {
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/get-product');
-      const response = await fetch("http://localhost:5000/get-product");
+      const response = await fetch("https://ecomm2backend.vercel.app/get-product");
       const data = await response.json();
       setProducts(data.products); // Access the products array from response
     } catch (error) {
@@ -82,8 +80,7 @@ const Product = () => {
 
   const handleSave = async (productId) => {
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/instock-update', {
-      const response = await fetch("http://localhost:5000/instock-update", {
+      const response = await fetch("https://ecomm2backend.vercel.app/instock-update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +106,7 @@ const Product = () => {
 
   const handleDelete = async (productId) => {
     try {
-      const response = await fetch(`http://localhost:5000/product-delete/${productId}`, {
+      const response = await fetch(`https://ecomm2backend.vercel.app/product-delete/${productId}`, {
         method: "DELETE",
       });
   

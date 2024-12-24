@@ -6,13 +6,15 @@ import { Package, ShoppingBag, MessageSquare, Users, Calendar, Menu, LayoutDashb
 const Sidebar = () => {
   const navigate = useNavigate();
   const { sellerId } = useParams();
+  console.log("sellerId",sellerId);
+  
   const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [productData, setProductData] = useState({
     name: "",
     price: "",
-    // img: "",
+ 
     img: [],
     category: "",
     rating: "",
@@ -23,7 +25,7 @@ const Sidebar = () => {
   });
   const location = useLocation();
 
-  // Set initial state based on screen size and update on resize
+ 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -94,7 +96,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/admin/logout", {
+      const response = await fetch("https://ecomm2backend.vercel.app/admin/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,8 +131,8 @@ const Sidebar = () => {
         });
       }
       console.log("FormData before submission:", formData);
-      // const response = await fetch("https://ecommercebackend-8gx8.onrender.com/create-product", {
-      const response = await fetch("http://localhost:5000/create-product", {
+    
+      const response = await fetch("https://ecomm2backend.vercel.app/create-product", {
         method: "POST",
         body: formData,
       });
@@ -178,18 +180,7 @@ const Sidebar = () => {
                 <img src={preview} alt="Selected" className="w-full h-full object-cover" />
               </div>
             )}
-            {/* {preview?.length > 0 && (
-              <div className="flex flex-wrap gap-3 mt-3">
-                {preview.map((imgPreview, index) => (
-                  <div key={index} className="w-24 h-24 relative border rounded overflow-hidden">
-                    <img src={imgPreview} alt={`Selected ${index}`} className="w-full h-full object-cover" />
-                    <button onClick={() => handleDeleteImage(index)} className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 rounded-full">
-                      X
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )} */}
+          
 
             <input type="text" name="category" placeholder="Category" value={productData.category} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" />
             <input type="number" name="rating" placeholder="Rating" value={productData.rating} onChange={handleInputChange} className="w-full mb-3 p-2 border rounded" min={0} max={5} />

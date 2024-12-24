@@ -45,8 +45,7 @@ const AdminSignup = () => {
     }
 
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/seller/signup', {
-      const response = await fetch('http://localhost:5000/admin/seller/signup', {
+      const response = await fetch('https://ecomm2backend.vercel.app/admin/seller/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -75,8 +74,7 @@ const AdminSignup = () => {
     setVerificationMethod(methodd);
     setError(null);
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/seller/send-otp', {
-      const response = await fetch('http://localhost:5000/seller/send-otp', {
+      const response = await fetch('https://ecomm2backend.vercel.app/seller/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -102,7 +100,7 @@ const AdminSignup = () => {
     if (resendDisabled) return;
     
     try {
-      const response = await fetch('http://localhost:5000/seller/send-otp', {
+      const response = await fetch('https://ecomm2backend.vercel.app/seller/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -143,7 +141,7 @@ const AdminSignup = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/seller/verify-otp', {
+      const response = await fetch('https://ecomm2backend.vercel.app/seller/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -157,7 +155,7 @@ const AdminSignup = () => {
       const data = await response.json();
 
     if (response.ok && data.message === 'OTP verified successfully') {
-      const sellerId = data.sellerId; // Ensure backend sends this
+      const sellerId = data.sellerId; 
       sessionStorage.setItem('sellerId', sellerId);
       navigate(`/admin/${sellerId}`);
     } else {

@@ -22,8 +22,7 @@ const Customers = () => {
       }
 
       try {
-        // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/admin/verify-seller', {
-        const response = await fetch('http://localhost:5000/admin/verify-seller', {
+        const response = await fetch('https://ecomm2backend.vercel.app/admin/verify-seller', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -51,8 +50,7 @@ const Customers = () => {
 
   const fetchCustomers = async () => {
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/get-user');
-      const response = await fetch('http://localhost:5000/get-user');
+      const response = await fetch('https://ecomm2backend.vercel.app/get-user');
       const data = await response.json();
       if (data.success) {
         // Map the user data and set default values if fields are missing
@@ -79,8 +77,7 @@ const Customers = () => {
 
   const handleStatusChange = async (userId, newStatus) => {
     try {
-      // const response = await fetch('https://ecommercebackend-8gx8.onrender.com/update-account-status', {
-      const response = await fetch('http://localhost:5000/update-account-status', {
+      const response = await fetch('https://ecomm2backend.vercel.app/update-account-status', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
